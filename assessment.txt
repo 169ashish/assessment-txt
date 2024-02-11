@@ -1,0 +1,112 @@
+﻿In [1]:
+import csv
+
+def import_csv_file(file_path):
+    data = []
+    with open(file_path, 'r') as file:
+        csv_reader = csv.reader(file)
+        for row in csv_reader:
+            data.append(row)
+    return data
+
+file_path = r'C:\Users\91737\Desktop\weather.csv'  
+csv_data = import_csv_file(file_path)
+print(csv_data)
+[['City', 'Fall', 'Winter', 'Spring', 'Summer'], ['London', '68', '94', '103', '21'], ['Paris', '46', '86', '26', '70'], ['New York', '106', '105', '84', '70'], ['Dubai', '107', '102', '94', '21'], ['Tokyo', '100', '87', '59', '38'], ['Singapore', '55', '103', '43', '64'], ['Los Angeles', '75', '74', '69', '84'], ['Barcelona', '57', '57', '57', '92'], ['Madrid', '66', '106', '39', '20']]
+In [2]:
+#Q1-Answer to data should look like this
+import pandas as pd
+
+# Read data from CSV file
+file_path = r'C:\Users\91737\Desktop\weather.csv'
+weather = pd.read_csv(file_path)
+
+# Combine DataFrame to combine Seasons into a single column
+weather_melted = weather.melt(id_vars=['City'], var_name='Season', value_name='Temperature')
+
+# Sort the DataFrame by city
+weather_melted.sort_values(by='City', inplace=True)
+
+weather_melted.reset_index(drop=True, inplace=True)
+
+print(weather_melted)
+           City  Season  Temperature
+0     Barcelona  Spring           57
+1     Barcelona  Summer           92
+2     Barcelona    Fall           57
+3     Barcelona  Winter           57
+4         Dubai  Summer           21
+5         Dubai  Spring           94
+6         Dubai  Winter          102
+7         Dubai    Fall          107
+8        London  Summer           21
+9        London  Winter           94
+10       London  Spring          103
+11       London    Fall           68
+12  Los Angeles    Fall           75
+13  Los Angeles  Winter           74
+14  Los Angeles  Spring           69
+15  Los Angeles  Summer           84
+16       Madrid  Spring           39
+17       Madrid  Winter          106
+18       Madrid  Summer           20
+19       Madrid    Fall           66
+20     New York  Spring           84
+21     New York  Winter          105
+22     New York    Fall          106
+23     New York  Summer           70
+24        Paris  Spring           26
+25        Paris    Fall           46
+26        Paris  Winter           86
+27        Paris  Summer           70
+28    Singapore  Summer           64
+29    Singapore    Fall           55
+30    Singapore  Winter          103
+31    Singapore  Spring           43
+32        Tokyo  Summer           38
+33        Tokyo  Spring           59
+34        Tokyo    Fall          100
+35        Tokyo  Winter           87
+In [8]:
+#Q2- Generate and save a dataframe with all of the columns: (a) day, 
+#(b) month and (c) year between the current day from the independence day of India.
+import pandas as pd
+from datetime import datetime
+
+def generate_dates(start_date, end_date):
+    dates = pd.date_range(start=start_date, end=end_date, freq='D')
+    return pd.DataFrame({'day': dates.day, 'month': dates.month, 'year': dates.year})
+
+# Independence Day of India (August 15th)
+independence_day = pd.to_datetime("1947-08-15")
+current_date = datetime.now()
+
+# Generate dates between current date and Independence Day
+dates_df = generate_dates(current_date, independence_day)
+
+# Save dataframe to a CSV file
+dates_df.to_csv('dates_between_current_and_independence_day.csv', index=False)
+
+print("Dataframe saved successfully.")
+Dataframe saved successfully.
+In [7]:
+##Q3-Write a python code for finding out top K frequent item from a list.
+def top_k_frequent_items(lst, k):
+    frequency_map = {}
+    for item in lst:
+        frequency_map[item] = frequency_map.get(item, 0) + 1
+    
+    top_k_items = sorted(frequency_map, key=frequency_map.get, reverse=True)[:k]
+    
+    return top_k_items
+
+input_list = [1, 2, 3, 4, 5, 1, 2, 3, 1, 2, 1]
+k = 2
+output = top_k_frequent_items(input_list, k)
+print(output)  # Output: [1, 2]
+[1, 2]
+In [12]:
+#Q4-Write a sql query to retrieve the top 3 highest-mark_achiever 
+#from the a table, along with their marks.
+In [ ]:
+#Q5-Still learning Sql 
